@@ -51,7 +51,8 @@ $ openssl x509 -in ca.crt -text
 $ openssl genrsa -out server.key 2048
 
 # 証明書署名要求(CSR)の作成
-$ openssl req -new -sha256 -key server.key -out server.csr -config openssl.cnf
+$ openssl req -new -nodes -sha256 -key server.key -out server.csr -config openssl.cnf
+# Common Name で localhost を入力
 
 # 証明書を自分の秘密鍵で署名して作成
 $ openssl x509 -req -days 365 -in server.csr -sha256 -out server.crt -CA ca.crt -CAkey ca.key -CAcreateserial -extfile ./openssl.cnf -extensions Server
