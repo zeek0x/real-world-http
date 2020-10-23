@@ -326,7 +326,7 @@ CipherString = DEFAULT@SECLEVEL=2
 
 [CA]
 basicConstraints=critical,CA:TRUE,pathlen:0
-keyUsage=digitalSignature,keyCertSign,cRLsign
+keyUsage=digitalSignature,keyCertSign,cRLSign
 
 [Server]
 basicConstraints=CA:FALSE
