@@ -24,6 +24,8 @@ func main() {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: tlsConfig,
+			// 証明書を確認しない
+			// InsecureSkipVerify: true
 		},
 	}
 
