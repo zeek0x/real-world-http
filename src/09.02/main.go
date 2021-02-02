@@ -34,6 +34,6 @@ func main() {
 	http.HandleFunc("/", handlerHtml)
 	http.HandleFunc("/image", handlerImage)
 	fmt.Println("start http listening :18443")
-	err := http.ListenAndServeTLS(":18443", "ssl/server.crt", "ssl/server.key", nil)
+	err := http.ListenAndServe(":18443", nil)
 	fmt.Println(err)
 }
