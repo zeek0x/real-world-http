@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/skratchodot/open-golang/open"
 	"golang.org/x/oauth2"
@@ -65,14 +65,31 @@ func main() {
 	}
 	client := oauth2.NewClient(oauth2.NoContext, conf.TokenSource(oauth2.NoContext, token))
 
-	resp, err := client.Get("https://api.github.com/user/emails")
+	gist := `{
+		"description": "API example",
+		"public": true,
+		"files": {
+			"hello_from_rest_api.txt": {
+				"content": "Hello World"
+			}
+		}
+	}`
+
+	resp2, err := client.Post("https://api.github.com/gists", "application/json", strings.NewReader(gist))
 	if err != nil {
 		panic(err)
 	}
-	defer resp.Body.Close()
-	emails, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(resp2.Status)
+	defer resp2.Body.Close()
+	type GistResult struct {
+		Url string `json:html_url`
+	}
+	gistResult := &GistResult{}
+	err = json.NewDecoder(resp2.Body).Decode(&gistResult)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(emails))
+	if gistResult.Url != "" {
+		open.Start(gistResult.Url)
+	}
 }
